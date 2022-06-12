@@ -19,19 +19,24 @@ FROM gcr.io/kubeflow-images-public/tensorflow-1.14.0-notebook-${IMAGE_TYPE}:v0.7
 
 USER root
 
+
+# Install custom dependencies
+RUN apt-get update 
+
+RUN apt-get install -y tesseract-ocr tesseract-ocr-deu libtesseract-dev libleptonica-dev
+RUN apt-get install -y poppler-utils
+RUN apt-get install -y libopencv-dev
+
+
 # Install basic dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
         ca-certificates bash-completion tar less \
         python-pip python-setuptools build-essential python-dev \
         python3-pip python3-wheel && \
     rm -rf /var/lib/apt/lists/*
 
 
-# Install custom dependencies
-RUN apt-get install -y tesseract-ocr tesseract-ocr-deu libtesseract-dev libleptonica-dev pkg-config
-RUN apt-get install -y poppler-utils
-RUN apt-get install -y libopencv-dev
+
 
 
 
