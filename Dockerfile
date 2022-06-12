@@ -18,8 +18,3 @@ RUN apt-get install -y tesseract-ocr tesseract-ocr-deu libtesseract-dev liblepto
 RUN apt-get install -y poppler-utils
 RUN apt-get install -y libopencv-dev
 
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-dev
-RUN pip install gunicorn
-
