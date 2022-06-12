@@ -34,9 +34,6 @@ RUN apt-get install -y poppler-utils
 RUN apt-get install -y libopencv-dev
 
 
-ENV SHELL /bin/bash
-COPY bashrc /etc/bash.bashrc
-RUN echo "set background=dark" >> /etc/vim/vimrc.local
 
 # Install latest KFP SDK
 RUN pip3 freeze
