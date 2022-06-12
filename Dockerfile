@@ -25,29 +25,14 @@ RUN apt-get install -y tesseract-ocr tesseract-ocr-deu libtesseract-dev liblepto
 RUN apt-get install -y poppler-utils
 RUN apt-get install -y libopencv-dev
 
-
-# Install latest KFP SDK
+# Install latest KFP SDK & Kale & JupyterLab Extension
 RUN pip3 install --upgrade pip && \
     # XXX: Install enum34==1.1.8 because other versions lead to errors during
     #  KFP installation
     pip3 install --upgrade "enum34==1.1.8" && \
-    pip3 install --upgrade "jupyterlab>=2.0.0,<3.0.0"
-
-# Install Kale from KALE_BRANCH (defaults to "master")
-ARG KALE_BRANCH="master"
-WORKDIR /
-RUN rm -rf /kale && \
-    git clone -b ${KALE_BRANCH} https://github.com/kubeflow-kale/kale
-
-WORKDIR /kale/backend
-RUN pip3 install --upgrade .
-
-WORKDIR /kale/labextension
-RUN jlpm install && \
-    jlpm run build && \
-    jupyter labextension install .
-
-RUN jupyter lab build --dev-build=False
+    pip3 install --upgrade "jupyterlab>=2.0.0,<3.0.0" && \
+    pip3 install --upgrade kubeflow-kale && \
+    jupyter labextension install kubeflow-kale-labextension
 
 RUN echo "jovyan ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/jovyan
 WORKDIR /home/jovyan
