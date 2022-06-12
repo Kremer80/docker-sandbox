@@ -12,10 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# Use tensorflow-1.14.0 as a base image, allowing the user to
-# speficy if they want GPU support, by setting IMAGE_TYPE to "gpu".
-ARG IMAGE_TYPE="cpu"
-FROM gcr.io/kubeflow-images-public/tensorflow-1.14.0-notebook-${IMAGE_TYPE}:v0.7.0
+# Use tensorflow-1.14.0 based image with Rok as a base image
+FROM gcr.io/arrikto-public/tensorflow-1.14.0-notebook-cpu:kubecon-workshop
 
 USER root
 
@@ -28,20 +26,7 @@ RUN apt-get install -y poppler-utils
 RUN apt-get install -y libopencv-dev
 
 
-# Install basic dependencies
-RUN apt-get install -y --no-install-recommends \
-        ca-certificates bash-completion tar less \
-        python-pip python-setuptools build-essential python-dev \
-        python3-pip python3-wheel && \
-    rm -rf /var/lib/apt/lists/*
-
-
-
-
-
-
 # Install latest KFP SDK
-RUN pip3 freeze
 RUN pip3 install --upgrade pip && \
     # XXX: Install enum34==1.1.8 because other versions lead to errors during
     #  KFP installation
@@ -51,7 +36,8 @@ RUN pip3 install --upgrade pip && \
 # Install Kale from KALE_BRANCH (defaults to "master")
 ARG KALE_BRANCH="master"
 WORKDIR /
-RUN git clone -b ${KALE_BRANCH} https://github.com/kubeflow-kale/kale
+RUN rm -rf /kale && \
+    git clone -b ${KALE_BRANCH} https://github.com/kubeflow-kale/kale
 
 WORKDIR /kale/backend
 RUN pip3 install --upgrade .
@@ -71,7 +57,3 @@ CMD ["sh", "-c", \
      "jupyter lab --notebook-dir=/home/jovyan --ip=0.0.0.0 --no-browser \
       --allow-root --port=8888 --LabApp.token='' --LabApp.password='' \
       --LabApp.allow_origin='*' --LabApp.base_url=${NB_PREFIX}"]
-      
-      
-
-
