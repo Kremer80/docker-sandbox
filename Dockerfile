@@ -19,8 +19,9 @@ USER root
 
 
 # Install custom dependencies
-RUN apt-get update 
+RUN apt-get update
 
+RUN apt-get install python3.7
 RUN apt-get install -y tesseract-ocr tesseract-ocr-deu libtesseract-dev libleptonica-dev
 RUN apt-get install -y poppler-utils
 RUN apt-get install -y libopencv-dev
