@@ -13,19 +13,26 @@
 #  limitations under the License.
 
 # Use tensorflow-1.14.0 based image with Rok as a base image
-FROM gcr.io/arrikto-public/tensorflow-1.14.0-notebook-cpu:kubecon-workshop
+FROM gcr.io/arrikto-public/tensorflow-1.15.2-notebook-cpu:1.0.0.arr1
 
 USER root
-
 
 # Install custom dependencies
 RUN apt-get update
 
-RUN apt-get install -y python3.7
 RUN apt-get install -y tesseract-ocr tesseract-ocr-deu libtesseract-dev libleptonica-dev
 RUN apt-get install -y poppler-utils
 RUN apt-get install -y libopencv-dev
 
+
+# Install latest KFP SDK & Kale & JupyterLab Extension
+RUN pip3 install --upgrade pip && \
+    # XXX: Install enum34==1.1.8 because other versions lead to errors during
+    #  KFP installation
+    pip3 install --upgrade "enum34==1.1.8" && \
+    pip3 install --upgrade "jupyterlab>=2.0.0,<3.0.0" && \
+    pip3 install --upgrade kubeflow-kale && \
+    jupyter labextension install kubeflow-kale-labextension
 
 RUN echo "jovyan ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/jovyan
 WORKDIR /home/jovyan
