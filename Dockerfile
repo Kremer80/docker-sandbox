@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 # Use tensorflow-1.14.0 based image with Rok as a base image
-FROM gcr.io/arrikto-public/tensorflow-1.15.2-notebook-cpu:1.0.0.arr1
+FROM gcr.io/arrikto/jupyter-kale-py38:release-1.5-l0-release-1.5-pre-649-gd6107e82b
 
 USER root
 
