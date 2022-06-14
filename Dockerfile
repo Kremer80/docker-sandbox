@@ -13,7 +13,9 @@
 #  limitations under the License.
 
 # Use tensorflow-1.14.0 based image with Rok as a base image
-FROM gcr.io/arrikto/jupyter-kale-py38:release-1.5-l0-release-1.5-rc4-4-gbc3c6f09d
+#FROM gcr.io/arrikto/jupyter-kale-py38:release-1.5-l0-release-1.5-rc4-4-gbc3c6f09d
+FROM gcr.io/arrikto/kale-py38:release-1.5-l0-release-1.5-rc4-4-gbc3c6f09d
+
 
 USER root
 
@@ -25,4 +27,11 @@ RUN apt-get install -y poppler-utils
 RUN apt-get install -y libopencv-dev
 
 
+RUN echo "jovyan ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/jovyan
+WORKDIR /home/jovyan
+USER jovyan
 
+CMD ["sh", "-c", \
+     "jupyter lab --notebook-dir=/home/jovyan --ip=0.0.0.0 --no-browser \
+      --allow-root --port=8888 --LabApp.token='' --LabApp.password='' \
+      --LabApp.allow_origin='*' --LabApp.base_url=${NB_PREFIX}"]
