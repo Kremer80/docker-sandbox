@@ -14,8 +14,8 @@
 
 # Use tensorflow-1.14.0 based image with Rok as a base image
 #FROM gcr.io/arrikto/jupyter-kale-py38:release-1.5-l0-release-1.5-rc4-4-gbc3c6f09d
-FROM gcr.io/arrikto/kale-py38:release-1.5-l0-release-1.5-rc4-4-gbc3c6f09d
-
+#FROM gcr.io/arrikto/kale-py38:release-1.5-l0-release-1.5-rc4-4-gbc3c6f09d
+FROM gcr.io/arrikto/jupyter-kale-py36:release-1.4-l0-release-1.4-rc8-7-g3d66e477d
 
 USER root
 
